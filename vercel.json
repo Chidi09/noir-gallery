@@ -1,0 +1,8 @@
+{
+  "buildCommand": "prisma generate && nuxt build",
+  "installCommand": "pnpm install",
+  "framework": "nuxtjs",
+  "env": {
+    "NUXT_TELEMETRY_DISABLED": "1"
+  }
+}
