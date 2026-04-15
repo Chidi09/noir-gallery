@@ -1,5 +1,5 @@
 {
-  "buildCommand": "prisma generate && nuxt build",
+  "buildCommand": "prisma generate && prisma migrate deploy && nuxt build",
   "installCommand": "pnpm install",
   "framework": "nuxtjs",
   "env": {
