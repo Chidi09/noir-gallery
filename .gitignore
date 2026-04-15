@@ -25,7 +25,7 @@ logs
 # Database
 *.db
 *.db-journal
-prisma/migrations/
+
 
 # Vercel
 .vercel
