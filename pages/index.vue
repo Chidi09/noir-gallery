@@ -151,6 +151,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'default'
+})
+
 const { data: genres } = useFetch('/api/genres', {
   server: true,
   default: () => []
