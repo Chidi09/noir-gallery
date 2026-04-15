@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String?
+  role          String         @default("AUTHOR")
+  status        String         @default("ACTIVE")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  authorProfile AuthorProfile?
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuthorProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  slug        String   @unique
+  penName     String   @unique
+  fullName    String?
+  bio         String?
+  avatarUrl   String?
+  bannerUrl   String?
+  websiteUrl  String?
+  socialJson  String?  @default("{}")
+  status      String   @default("PENDING")
+  isVerified  Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  books       Book[]
+}
+
+model Book {
+  id              String   @id @default(cuid())
+  authorProfileId String
+  slug            String   @unique
+  title           String
+  synopsis        String?
+  coverImageUrl   String?
+  seriesName      String?
+  volumeNumber    Int?
+  genreId         String?
+  tags            String   @default("")
+  language        String   @default("en")
+  publicationDate DateTime?
+  status          String   @default("DRAFT")
+  isFeatured      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime?
+  authorProfile   AuthorProfile @relation(fields: [authorProfileId], references: [id], onDelete: Cascade)
+  genre           Genre?    @relation(fields: [genreId], references: [id])
+  links           BookLink[]
+}
+
+model BookLink {
+  id           String    @id @default(cuid())
+  bookId       String
+  provider     String
+  url          String
+  countryCode  String    @default("US")
+  externalId   String?
+  affiliateTag String?
+  isPrimary    Boolean   @default(false)
+  verifiedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model Genre {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  books       Book[]
+}
