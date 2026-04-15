@@ -151,5 +151,11 @@
 </template>
 
 <script setup>
-const { data: genres } = await useFetch('/api/genres')
+const { data: genres, error } = await useFetch('/api/genres', {
+  default: () => []
+})
+
+if (error.value) {
+  console.error('Failed to fetch genres:', error.value)
+}
 </script>
