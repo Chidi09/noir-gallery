@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen bg-surface">
-    <AppHeader />
+    <LayoutAppHeader />
     <main>
       <slot />
     </main>
-    <AppFooter />
+    <LayoutAppFooter />
   </div>
 </template>
